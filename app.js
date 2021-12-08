@@ -20,11 +20,50 @@
 //      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^        //
 //                  Buddha bless, never BUG, ​​never modify                      //
 ////////////////////////////////////////////////////////////////////
+
+const options = {
+    definition: {
+      openapi: "3.0.0",
+      info: {
+        title: "Task  Express API with Swagger",
+        version: "0.1.0",
+        description:
+          "This is a TASK CRUD API application ",
+        license: {
+          name: "MIT",
+          url: "https://spdx.org/licenses/MIT.html",
+        },
+        contact: {
+          name: "LogRocket",
+          url: "https://logrocket.com",
+          email: "wunnahtun99@gmail.com",
+        },
+      },
+      servers: [
+        {
+          url: "http://localhost:3000/api/v1",
+        },
+      ],
+    },
+    apis: ["./routers/*.js","./controllers/task.js"],
+  };
+
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 const tasks=require('./routers/tasks')
 const connectDb=require('./db/connnect')
+
+const swaggerJsdoc = require("swagger-jsdoc")
+
+const swaggerUi = require("swagger-ui-express")
+
+const specs = swaggerJsdoc(options);
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(specs, { explorer: true })
+);
 require('dotenv').config()
 // middle 
 app.use(express.json())
